@@ -42,21 +42,35 @@ public class KMeansRun {
      */
     private void init() {
         pointList = new ArrayList<Point>();
-        for (int i = 0, j = original_data.size(); i < j; i++){
+        for (int i = 0, j = original_data.size(); i < j;i++){
             //把得到的数据一个一个对应到 点上去
             pointList.add(new Point(i, original_data.get(i)));
+
+
+
         }
     }
 
     /**
      * 随机选取中心点，构建成中心类。
+     *
+     *
+     *     private int id;// 标识
+     *     private Point center;// 中心
+     *     private List<Point> members = new ArrayList<Point>();// 成员
+     *
      */
+
     private Set<Cluster> chooseCenterCluster() {
         Set<Cluster> clusterSet = new HashSet<Cluster>();
+
         Random random = new Random();
+
         for (int id = 0; id < kNum; ) {
+
             Point point = pointList.get(random.nextInt(pointList.size()));
             // 用于标记是否已经选择过该数据。
+
             boolean flag =true;
             for (Cluster cluster : clusterSet) {
                 if (cluster.getCenter().equals(point)) {
@@ -65,6 +79,7 @@ public class KMeansRun {
             }
             // 如果随机选取的点没有被选中过，则生成一个cluster
             if (flag) {
+
                 Cluster cluster =new Cluster(id, point);
                 clusterSet.add(cluster);
                 id++;
@@ -132,13 +147,20 @@ public class KMeansRun {
      * 运行 k-means
      */
     public Set<Cluster> run() {
+        // 先选择中心点
         Set<Cluster> clusterSet= chooseCenterCluster();
+
         boolean ifNeedIter = true;
+
         while (ifNeedIter) {
+            // 为每一个点分配一个类
             cluster(clusterSet);
+            //计算中心点
             ifNeedIter = calculateCenter(clusterSet);
             iterRunTimes ++ ;
+
         }
+
         return clusterSet;
     }
 

@@ -204,8 +204,10 @@ $(document).ready(function() {
 			textList.push(result[i].text);
 			maxList.push(result[i].max);
 			list.push(result[i].name);
-			indicatorList.push({"text":result[i].text,"max":result.max});
+			indicatorList.push({"text":result[i].text,"max":result.max, "axisLabel": {"show": true, "textStyle": {"fontSize": 18," color": '#333'}}});
 		}
+
+
 
 		alert( textList +""+ maxList+""+ list);
 		option = null;

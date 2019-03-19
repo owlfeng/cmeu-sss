@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,9 +27,13 @@ import com.cmeu.pojo.vo.CustomerVo;
 import com.cmeu.result.DataTable;
 import com.cmeu.service.AnalyService;
 import com.cmeu.service.CustomerService;
+import util.Cluster;
+import util.KMeansRun;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import static com.sun.tools.internal.xjc.reader.Ring.add;
 
 @Controller
 @RequestMapping("/custom")
@@ -42,7 +43,7 @@ public class CustomController {
     @Autowired
     AnalyService analyService;
 	@Autowired
-	private HttpServletResponse response;
+	private HttpServletRequest request;
 
     @RequestMapping("/analy")
     public ModelAndView analy() throws Exception {
@@ -69,15 +70,33 @@ public class CustomController {
 	@ResponseBody
 	public  List<echartsRaderVo> echarts(Model model){
 		List<echartsRaderVo> list =new ArrayList<echartsRaderVo>();
-		ArrayList<String> strings = new ArrayList<String>();
-		for (int i=0 ;i<5;i++) {
-			strings.add(String.valueOf(Math.ceil(Math.random() * 100)));
+		ArrayList<List<String>> temp = new ArrayList<>();
+		ArrayList<float[]> dataSet = new ArrayList<float[]>();
+		ArrayList<float[]> localArray = new ArrayList<float[]>();
+		ArrayList<String> strings = new ArrayList<>();
+		dataSet.add(new float[] { 1, 2, 3 ,1,5});
+		dataSet.add(new float[] { 3, 3, 3 ,12,4});
+		dataSet.add(new float[] { 3, 4, 4,6,7});
+		dataSet.add(new float[] { 5, 6, 5,1,9});
+		dataSet.add(new float[] { 8, 9, 6,1,1});
+		dataSet.add(new float[] { 4, 5, 4,1,19});
+		dataSet.add(new float[] { 6, 4, 2,3,9});
+		dataSet.add(new float[] { 3, 9, 7,2,1});
+		dataSet.add(new float[] { 5, 9, 8,10,1});
+		dataSet.add(new float[] { 4, 2, 10,2,3});
+		dataSet.add(new float[] { 1, 9, 12,9,1});
+		dataSet.add(new float[] { 7, 8, 11,4,2});
+		dataSet.add(new float[] { 7, 8, 4,2,1});
+		KMeansRun kRun =new KMeansRun(5, dataSet);
+		Set<Cluster> clusterSet = kRun.run();
+		//这里把聚类完成的中心点
+		for (Cluster cluster : clusterSet) {
+			localArray.add(	cluster.getCenter().getlocalArray());
 		}
-		list.add(new echartsRaderVo("客户1",strings,"特点1",100));
-		list.add(new echartsRaderVo("客户2",strings,"特点2",100));
-		list.add(new echartsRaderVo("客户3",strings,"特点3",100));
-		list.add(new echartsRaderVo("客户4",strings,"特点4",100));
-		list.add(new echartsRaderVo("客户5",strings,"特点5",100));
+		for (int o=0;o<5;o++){
+			echartsRaderVo echartsRader = new echartsRaderVo("客户"+(o+1), localArray.get(o), "特点"+(o+1), 15,-5);
+			list.add(echartsRader);
+		}
 		return  list;
 	}
 

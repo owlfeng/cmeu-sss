@@ -4,15 +4,20 @@ import java.util.List;
 
 public class echartsRaderVo {
     private String  name;
-    private List<String> value;
+    private float[] value;
     private String text;
     private int max;
+    private int min;
 
-    public echartsRaderVo(String name, List<String> value, String text, int max) {
+    public echartsRaderVo() {
+    }
+
+    public echartsRaderVo(String name, float[] value, String text, int max, int min) {
         this.name = name;
         this.value = value;
         this.text = text;
         this.max = max;
+        this.min = min;
     }
 
     public String getName() {
@@ -23,11 +28,11 @@ public class echartsRaderVo {
         this.name = name;
     }
 
-    public List<String> getValue() {
+    public float[] getValue() {
         return value;
     }
 
-    public void setValue(List<String> value) {
+    public void setValue(float[] value) {
         this.value = value;
     }
 
@@ -45,5 +50,13 @@ public class echartsRaderVo {
 
     public void setMax(int max) {
         this.max = max;
+    }
+
+    public int getMin() {
+        return min;
+    }
+
+    public void setMin(int min) {
+        this.min = min;
     }
 }

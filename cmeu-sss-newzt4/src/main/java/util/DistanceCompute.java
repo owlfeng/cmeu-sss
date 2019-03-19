@@ -1,7 +1,7 @@
 package util;
 public class DistanceCompute {
     /**
-     * «Û≈∑ Ωæ‡¿Î
+
      */
     public double getEuclideanDis(Point p1, Point p2) {
         double count_dis = 0;
@@ -12,7 +12,7 @@ public class DistanceCompute {
             throw new IllegalArgumentException("length of array must be equal!");
         }
 
-        for (int i = 0; i < p1_local_array.length; i++) {
+        for (int i = 0; i < p1_local_array.length; i++) { // 4
             count_dis += Math.pow(p1_local_array[i] - p2_local_array[i], 2);
         }
 

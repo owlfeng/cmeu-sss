@@ -81,7 +81,9 @@
 										<div class="padding-md">
 										    <div class="canvas-wrapper">
 						     <div id="main" style="height:400px;"></div>
-						</div>
+												<div id="dader" style="height:400px;"></div>
+
+											</div>
 										</div>
 									</div>
 								</div><!-- ./smart-widget-inner -->
@@ -89,8 +91,10 @@
 						</div><!-- ./col -->
 					</div>
 				</div><!-- ./padding-md -->
-<script src="<%=request.getContextPath()%>/plugins/echarts/echarts.common.min.js"></script>
+<script src="<%=request.getContextPath()%>/plugins/echarts/echarts-all.js"></script>
  <script type="text/javascript" language="javascript" class="init">
+
+
 $(document).ready(function() {
     var Arr = new Array();//类型
     var ArrNum = new Array()//个数
@@ -108,9 +112,9 @@ $(document).ready(function() {
                 alert("加载数据失败");
             }
         });
-
     var dom = document.getElementById("main");
-    var myChart = echarts.init(dom);
+	var myChart = echarts.init(dom);
+
     function echartPie(result){
 
         option = null;
@@ -174,8 +178,108 @@ $(document).ready(function() {
             myChart.setOption(option, true);
         }
     }
+// ********************dader echarts**************************************************
+	$.ajax(
+			{
+				type: "POST",
+				url: "<%=request.getContextPath()%>/custom/queryEchart2",
+				dataType: 'json',
+				success: function (result) {
+					if (result) {
+						echartRader(result);
+					}
+				},
+				error : function(errorMsg) {
+					alert("加载数据失败");
+				}
+			});
+	var dom2 = document.getElementById("dader");
+	var myChart2 = echarts.init(dom2);
+	function echartRader(result) {
+		var list =[];
+		var indicatorList=[];
+		var textList=[];
+		var maxList=[];
+		for(var i in result){
+			textList.push(result[i].text);
+			maxList.push(result[i].max);
+			list.push(result[i].name);
+			indicatorList.push({"text":result[i].text,"max":result.max});
+		}
 
-
+		alert( textList +""+ maxList+""+ list);
+		option = null;
+		option = {
+			title: {
+				text: '预算 vs 开销（Budget vs spending）',
+				subtext: '纯属虚构'
+			},
+			tooltip: {
+				trigger: 'axis'
+			},
+			legend: {
+				orient: 'vertical',
+				x: 'right',
+				y: 'bottom',
+				data:
+						list
+			// ['客户1','客户2','客户3','客户4','客户5']
+				/*
+                *  for(var i in data){
+                      //表示遍历数组，而i表示的是数组的下标值，
+                      //data[i]表示获得第i个json对象即JSONObject
+                      //data[i]通过.字段名称即可获得指定字段的值
+                        data[i].userName;
+                       }
+                *
+                * */
+			},
+			toolbox: {
+				show: true,
+				feature: {
+					mark: {show: true},
+					dataView: {show: true, readOnly: false},
+					restore: {show: true},
+					saveAsImage: {show: true}
+				}
+			},
+			polar: [
+				{
+					indicator:
+							indicatorList
+						// 			[
+                        //     {text: '特点1', max: 100},
+                        //     {text: '特点2', max: 100},
+                        //     {text: '特点3', max: 100},
+                        //     {text: '特点4', max: 100},
+                        //     {text: '特点5', max: 100},
+                        // ]
+				}
+			],
+			calculable: true,
+			series: [
+				{
+					name: '预算 vs 开销（Budget vs spending）',
+					type: 'radar',
+					data:
+							 result
+						// 			[
+                        //     {
+                        //         value: [45, 23, 13, 45, 45, 45],
+                        //         name: '预算分配（Allocated Budget）'
+                        //     },
+                        //     {
+                        //         value: [60, 60, 60, 60, 60, 60],
+                        //         name: '实际开销（Actual Spending）'
+                        //     }
+                        // ]
+				}
+			]
+		};
+		if (option && typeof option === "object") {
+			myChart2.setOption(option, true);
+		}
+	}
 //*******************DataTable***************************************************
 
     var tables = $('#table1').DataTable( {

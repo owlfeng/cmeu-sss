@@ -29,7 +29,7 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
             WebUtils.issueRedirect(request, response, "/login");
             return false;
         }
- 
+
         // 看看这个路径权限里有没有维护，如果没有维护，一律放行(也可以改为一律不放行)
         boolean needInterceptor = permissionService.needInterceptor(requestURI);
         if (!needInterceptor) {
@@ -45,14 +45,14 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
                     break;
                 }
             }
- 
+
             if (hasPermission)
                 return true;
             else {
                 UnauthorizedException ex = new UnauthorizedException("当前用户没有访问路径 " + requestURI + " 的权限");
- 
+
                 subject.getSession().setAttribute("ex", ex);
-                
+
                 WebUtils.issueRedirect(request, response, "/unauthorized");
                 return false;
             }

@@ -6,6 +6,8 @@ import java.util.Set;
 public class test {
 
         public static void main(String[] args) {
+                float min_dis = Integer.MAX_VALUE;
+                System.out.println(min_dis);
 //            ArrayList<float[]> dataSet = new ArrayList<float[]>();
 //
 //            dataSet.add(new float[] { 1, 2, 3 ,1});

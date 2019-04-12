@@ -53,8 +53,8 @@ public class UserRealm extends AuthorizingRealm {
 			return null;
 		}
 //		if(loginUser.get) {
-//			return null;
-//		}
+////			return null;
+////		}
 		//通过service获取角色和权限
         Set<String> urls = roleService.listUrls(loginUser.getUserId());
         System.out.println(urls);

@@ -34,13 +34,14 @@
 				/fonts/** = anon
 				/dist/** = anon
 				/bootstrap/** = anon
-                /**= anon
+                <!--/**= anon-->
 				<!-- 登录 -->
 				/login = anon
 				<!-- 退出拦截 -->
 				/logout = logout
-				<!--/** = url-->
-			</value>
+                <!--url 拦截器-->
+				/** = url
+            </value>
 		</property>
 		
 	</bean>
